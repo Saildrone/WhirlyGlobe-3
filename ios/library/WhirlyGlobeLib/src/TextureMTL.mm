@@ -225,6 +225,11 @@ bool TextureMTL::createInRenderer(const RenderSetupInfo *inSetupInfo)
     // Set up the texture and upload the data
     MTLTextureDescriptor *desc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:pixFormat width:width height:height mipmapped:usesMipmaps];
     
+    if (@available(iOS 12.0, *)) {
+        // Opt-out of GPU optimization.
+        desc.allowGPUOptimizedContents = NO;
+    }
+    
     // If there's no data, then we're using this as a target
     if (!texData) {
         desc.usage = MTLTextureUsageRenderTarget | MTLTextureUsageShaderRead;

@@ -261,6 +261,10 @@ void RenderTargetMTL::addPostProcessing(id<MTLDevice> mtlDevice,id<MTLCommandBuf
                 minMaxKernel = [[MPSImageStatisticsMinAndMax alloc] initWithDevice:mtlDevice];
 
                 MTLTextureDescriptor *desc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:[tex pixelFormat] width:2 height:1 mipmapped:false];
+                if (@available(iOS 12.0, *)) {
+                    // Opt-out of GPU optimization.
+                    desc.allowGPUOptimizedContents = NO;
+                }
                 desc.usage = MTLTextureUsageShaderWrite | MTLTextureUsageShaderRead;
                 minMaxOutTex = [mtlDevice newTextureWithDescriptor:desc];
             }
